@@ -1,8 +1,11 @@
+
+
 #include "Figure.h"
+#include "CFigure.h"
 
 #include <Windows.h>
 #include <vector>
-
+#include <array>
 
 #pragma once
 
@@ -121,11 +124,8 @@ namespace KillMe {
 	public:
 		Figure fig0;
 		Figure^ figa = gcnew Figure(200, 20);
-		//vector<Figure> figs;
-
-		Figure figsAr[10];
 		
-		//vector<Figure> figs;
+		//CFigure fAra[10];
 
 	private:
 		System::Void frmMain_Load(System::Object^ sender, System::EventArgs^ e) {
@@ -140,16 +140,21 @@ namespace KillMe {
 			fig0.koord.y = 20;
 
 
+		
+			// CFigure fAra[10];	// WORK
+			//vector <CFigure> figs;
+
 			
-
-
-			//vector<Figure> figs(4);
+			
 			
 		}
 
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			//Figure^ figa = gcnew Figure(200, 20);
 			//figa->koords(200, 20);
+
+			vector <Figure> figs;
+			figs[0] = gcnew Figure(200, 20);
 
 
 			pnlField->Refresh();

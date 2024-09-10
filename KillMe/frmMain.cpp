@@ -9,7 +9,7 @@ using namespace System::Windows::Forms;
 
 [STAThreadAttribute]
 void CODE() {
-	using namespace std;
+	//using namespace std;
 
 	/*Figure fig1;
 	fig1.koord.x = 10;
@@ -17,7 +17,7 @@ void CODE() {
 	Figure fig2(110, 120);*/
 	//vector<Figure> figs(4);
 
-	cout << "Figures are set" << endl;
+	//cout << "Figures are set" << endl;
 }
 
 void APPLICATION_START() {

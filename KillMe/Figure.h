@@ -1,6 +1,6 @@
 #pragma once
 
-//ref struct koordinates { int x; int y; };
+ref struct koordinates { int x; int y; };
 
 ref class Figure
 {
@@ -9,11 +9,9 @@ public:
 	 Figure(int x, int y);
 	~Figure() {};
 
-	//koordinates koord;
-	//void koords(int, int);
+	koordinates koord;
+	void koords(int, int);
 
-	int X;
-	int Y;
 
 	void repaintFigure();
 	virtual void GAVKA();
