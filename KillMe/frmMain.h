@@ -57,7 +57,7 @@ namespace KillMe {
 			   this->pnlTop->Name = L"pnlTop";
 			   this->pnlTop->Size = System::Drawing::Size(360, 50);
 			   this->pnlTop->TabIndex = 2;
-			   // 
+			   //  
 			   // pnlBottom
 			   // 
 			   this->pnlBottom->BackColor = System::Drawing::Color::Black;
