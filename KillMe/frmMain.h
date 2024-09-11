@@ -26,7 +26,6 @@ namespace KillMe {
 	
 
 
-
 	public ref class frmMain : public System::Windows::Forms::Form
 	{
 #pragma region Kernel
