@@ -147,7 +147,6 @@ namespace KillMe {
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			isFiguresSpawn = true;
 
-
 			figs.push_back(
 				Figure(
 					"Gavka " + to_string(figureCounter),
