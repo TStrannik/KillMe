@@ -9,10 +9,6 @@
 
 #pragma once
 
-
-
-
-
 namespace KillMe {
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -25,9 +21,7 @@ namespace KillMe {
 
 
 
-	bool isSpawn = false;
-
-	
+	bool isFiguresSpawn = false;
 	vector <Figure> figs;
 	
 
@@ -151,66 +145,20 @@ namespace KillMe {
 		}
 
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
-			isSpawn = true;
+			isFiguresSpawn = true;
 
-
-
-
-
-			
 			figs.push_back(Figure(300, 30));
-		
-
-
-
+			figs.push_back(Figure("ABUCA", 100, 50));
 
 			pnlField->Refresh();
-			pnlField->Invalidate();
+			//pnlField->Invalidate();
 
 		}
 		System::Void pnlField_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-#pragma region def
-			Graphics^ g = e->Graphics;
-			g->SmoothingMode = Drawing2D::SmoothingMode::AntiAlias;
-			//g->Clear(pnlField->BackColor);
-			g->Clear(Color::White);
 
-			uint8_t w = pnlField->Width - 1, h = pnlField->Height - 1;
-			uint8_t r = 10;
-
-			StringFormat^ SF = gcnew StringFormat;
-			SF->Alignment = StringAlignment::Near;
-			SF->LineAlignment = StringAlignment::Near;
-
-			Pen^ pen = gcnew Pen(Color::Black);
-			Brush^ txBrush = gcnew SolidBrush(Color::Black);
-#pragma endregion
-
-
-
-
-		
-			
-			if (isSpawn) {
-
-				String^ ass = "Gavka"; figs.at(0).name;
-				int X = figs.at(0).koord.x;
-				int Y = figs.at(0).koord.y;
-
-				g->DrawArc(pen, X - r, Y - r, r * 2, r * 2, 0, 360);
-				g->DrawString(ass, Font, txBrush, X + r, Y - Font->Size / 3, SF);
-
-				
-
-
-			}
-
-
-
-			/*g->DrawArc(pen, fig0->koord.x - r, fig0->koord.y - r, r, r, 0, 360);
-			g->DrawArc(pen, fig1->koord.x - r, fig1->koord.y - r, r, r, 0, 360);
-			g->DrawString(fig0->name, Font, txBrush, fig0->koord.x, fig0->koord.y, SF);
-			g->DrawString(fig1->name, Font, txBrush, fig1->koord.x, fig1->koord.y, SF);*/
+			if (isFiguresSpawn) 
+				for (auto i = 0; i < figs.size(); i++) 
+					figs.at(i).repaintFigure(sender, e);
 
 		}
 #pragma endregion

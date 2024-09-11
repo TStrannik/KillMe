@@ -3,8 +3,6 @@
 
 #pragma once
 
-using namespace System;
-
 public struct koordinates { int x; int y; };
 
 public class Figure
@@ -12,18 +10,16 @@ public class Figure
 public:
 	 Figure();
 	 Figure(int x, int y);
-	~Figure() {};
+	 Figure(std::string, int x, int y);
+	 ~Figure() { std::cout << "~Figure()" << std::endl; };
 
 	koordinates koord;
 	void koords(int, int);
-	/*int X;
-	int Y;*/
 
 	std::string name;
 
 
-
-	void repaintFigure();
+	void repaintFigure(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 	virtual void GAVKA();
 
 	
