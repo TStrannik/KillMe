@@ -31,6 +31,8 @@ private:
 
 
 
+
+
 namespace KillMe {
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -40,6 +42,22 @@ namespace KillMe {
 	using namespace System::Drawing;
 	using namespace std;
 	
+
+
+
+	CCFigure* fig;
+
+	bool isSpawn = false;
+	UINT16 figC = 0;
+	CCFigure* figA = new CCFigure[10];
+
+	vector <CCFigure>** figV = new vector<CCFigure> *[10];
+
+
+	vector <CCFigure> figs;
+
+
+
 
 	public ref class frmMain : public System::Windows::Forms::Form
 	{
@@ -143,80 +161,38 @@ namespace KillMe {
 #pragma region Voids
 
 	public:
-		/*Figure fig;
-		Figure^ fig0;
-		Figure^ fig1;
-
-		vector<Figure^> *figs;*/
-
-		CCFigure *fig = new CCFigure();
-		
-		UINT16 figC = 0;
-		CCFigure* figA = new CCFigure[10];
-
-		
-		//CCFigure fig;
-		
-
-
-
-
-		//Figure fig0;	// good if ref&ref
-		//Figure^ figa = gcnew Figure(200, 20); // good if ref&ref
 
 
 	private:
 		System::Void frmMain_Load(System::Object^ sender, System::EventArgs^ e) {
+
+#pragma region startPos
 			pnlTop->Dock = DockStyle::Top;			pnlTop->SendToBack();
 			pnlBottom->Dock = DockStyle::Bottom;	pnlBottom->SendToBack();
 			pnlLeft->Dock = DockStyle::Left;
 			pnlRight->Dock = DockStyle::Right;
 			pnlField->Dock = DockStyle::Fill;
-
-
-
-			// CFigure fAra[10];	// WORK
-			//vector <CFigure> figs;
-
-
-			/*vector <Figure^> figs;*/
-			
-			
-
-			/*fig0 = gcnew Figure();
-			fig0->koord.x = 50;
-			fig0->koord.y = 20;
-
-			fig1 = gcnew Figure();*/
-
-
-			//figs->push_back(gcnew Figure());
-			
-
-			cout << endl;
-
-			//afigs[0] = new Figure();
-
-
-
-			//figs->push_back(Figure(200, 200));
-			//figs->push_back(Figure());
-
-			
+#pragma endregion
 			
 		}
 
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
+			isSpawn = true;
 
-			
-			//figs->push_back(Figure(200, 200));
 
-			/*fig.koord.x = 300;
-			fig.koord.y = 30;*/
 
-			//figA[figC] = new CCFigure();
+
 			figA[figC].X = 100; figA[figC].Y = 30;
 			figC++;
+
+			
+			fig = new CCFigure(); fig->X = 20; fig->Y = 30;
+
+
+			//figV->reserve(10);
+
+			//figV->push_back(CCFigure());
+
 
 
 			pnlField->Refresh();
@@ -224,6 +200,7 @@ namespace KillMe {
 
 		}
 		System::Void pnlField_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+#pragma region def
 			Graphics^ g = e->Graphics;
 			g->SmoothingMode = Drawing2D::SmoothingMode::AntiAlias;
 			//g->Clear(pnlField->BackColor);
@@ -238,15 +215,22 @@ namespace KillMe {
 
 			Pen^ pen = gcnew Pen(Color::Black);
 			Brush^ txBrush = gcnew SolidBrush(Color::Black);
+#pragma endregion
 
 
 
 
-			/*g->DrawArc(pen, fig.koord.x - r, fig.koord.y - r, r, r, 0, 360);
-			g->DrawString(fig.name, Font, txBrush, fig.koord.x, fig.koord.y, SF);*/
-
-			g->DrawArc(pen, fig[0].X - r, fig[0].Y - r, r, r, 0, 360);
+		
 			
+			if (isSpawn) {
+				g->DrawArc(pen, fig->X - r, fig->Y - r, r, r, 0, 360);
+
+				g->DrawArc(pen, figA[0].X - r, figA[0].Y - r, r, r, 0, 360);
+
+
+
+
+			}
 
 
 
@@ -255,13 +239,6 @@ namespace KillMe {
 			g->DrawString(fig0->name, Font, txBrush, fig0->koord.x, fig0->koord.y, SF);
 			g->DrawString(fig1->name, Font, txBrush, fig1->koord.x, fig1->koord.y, SF);*/
 
-
-
-			/*Figure fig2(110, 120);
-			g->DrawArc(pen, fig2.koord.x - r, fig2.koord.y - r, r, r, 0, 360);
-			g->DrawString(fig2.name, Font, txBrush, fig2.koord.x, fig2.koord.y, SF);*/
-
-			//g->DrawArc(pen, figs->at(0).koord.x - r, figs->at(0).koord.y - r, r, r, 0, 360);
 		}
 #pragma endregion
 
