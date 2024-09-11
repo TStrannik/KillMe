@@ -34,6 +34,7 @@ void Figure::GAVKA() { cout << "\tFigure::GAVKA" << endl; }
 
 
 
+
 void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 	Panel^ p = (Panel^)sender;
 #pragma region def
