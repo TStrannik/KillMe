@@ -39,6 +39,8 @@ namespace KillMe {
 	private: System::Windows::Forms::Panel^ pnlBottom;
 	private: System::Windows::Forms::Panel^ pnlField;
 	private: System::Windows::Forms::Button^ btnRespawn;
+	private: System::Windows::Forms::Label^ lblInfo1;
+	private: System::Windows::Forms::Button^ btnClose;
 	private: System::ComponentModel::Container^ components;
 #pragma endregion Kernel
 
@@ -48,9 +50,12 @@ namespace KillMe {
 			   this->pnlLeft = (gcnew System::Windows::Forms::Panel());
 			   this->pnlRight = (gcnew System::Windows::Forms::Panel());
 			   this->pnlTop = (gcnew System::Windows::Forms::Panel());
+			   this->btnClose = (gcnew System::Windows::Forms::Button());
 			   this->pnlBottom = (gcnew System::Windows::Forms::Panel());
 			   this->pnlField = (gcnew System::Windows::Forms::Panel());
+			   this->lblInfo1 = (gcnew System::Windows::Forms::Label());
 			   this->btnRespawn = (gcnew System::Windows::Forms::Button());
+			   this->pnlTop->SuspendLayout();
 			   this->pnlField->SuspendLayout();
 			   this->SuspendLayout();
 			   // 
@@ -73,10 +78,29 @@ namespace KillMe {
 			   // pnlTop
 			   // 
 			   this->pnlTop->BackColor = System::Drawing::Color::Black;
-			   this->pnlTop->Location = System::Drawing::Point(41, 35);
+			   this->pnlTop->Controls->Add(this->btnClose);
+			   this->pnlTop->Location = System::Drawing::Point(41, 54);
 			   this->pnlTop->Name = L"pnlTop";
-			   this->pnlTop->Size = System::Drawing::Size(360, 50);
+			   this->pnlTop->Size = System::Drawing::Size(360, 30);
 			   this->pnlTop->TabIndex = 2;
+			   this->pnlTop->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlTop_MouseDoubleClick);
+			   this->pnlTop->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlTop_MouseDown);
+			   this->pnlTop->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlTop_MouseMove);
+			   this->pnlTop->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlTop_MouseUp);
+			   // 
+			   // btnClose
+			   // 
+			   this->btnClose->Dock = System::Windows::Forms::DockStyle::Right;
+			   this->btnClose->FlatAppearance->BorderSize = 0;
+			   this->btnClose->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			   this->btnClose->ForeColor = System::Drawing::SystemColors::ControlLightLight;
+			   this->btnClose->Location = System::Drawing::Point(325, 0);
+			   this->btnClose->Name = L"btnClose";
+			   this->btnClose->Size = System::Drawing::Size(35, 30);
+			   this->btnClose->TabIndex = 1;
+			   this->btnClose->Text = L"X";
+			   this->btnClose->UseVisualStyleBackColor = true;
+			   this->btnClose->Click += gcnew System::EventHandler(this, &frmMain::btnClose_Click);
 			   // 
 			   // pnlBottom
 			   // 
@@ -89,12 +113,23 @@ namespace KillMe {
 			   // pnlField
 			   // 
 			   this->pnlField->BackColor = System::Drawing::Color::White;
+			   this->pnlField->Controls->Add(this->lblInfo1);
 			   this->pnlField->Controls->Add(this->btnRespawn);
 			   this->pnlField->Location = System::Drawing::Point(97, 91);
 			   this->pnlField->Name = L"pnlField";
 			   this->pnlField->Size = System::Drawing::Size(249, 160);
 			   this->pnlField->TabIndex = 1;
 			   this->pnlField->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &frmMain::pnlField_Paint);
+			   // 
+			   // lblInfo1
+			   // 
+			   this->lblInfo1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			   this->lblInfo1->AutoSize = true;
+			   this->lblInfo1->Location = System::Drawing::Point(3, 118);
+			   this->lblInfo1->Name = L"lblInfo1";
+			   this->lblInfo1->Size = System::Drawing::Size(35, 13);
+			   this->lblInfo1->TabIndex = 1;
+			   this->lblInfo1->Text = L"label1";
 			   // 
 			   // btnRespawn
 			   // 
@@ -117,10 +152,13 @@ namespace KillMe {
 			   this->Controls->Add(this->pnlTop);
 			   this->Controls->Add(this->pnlRight);
 			   this->Controls->Add(this->pnlLeft);
+			   this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			   this->Name = L"frmMain";
 			   this->Text = L"frmMain";
 			   this->Load += gcnew System::EventHandler(this, &frmMain::frmMain_Load);
+			   this->pnlTop->ResumeLayout(false);
 			   this->pnlField->ResumeLayout(false);
+			   this->pnlField->PerformLayout();
 			   this->ResumeLayout(false);
 
 		   }
@@ -138,10 +176,11 @@ namespace KillMe {
 			pnlLeft->Dock = DockStyle::Left;
 			pnlRight->Dock = DockStyle::Right;
 			pnlField->Dock = DockStyle::Fill;
+
+			lblInfo1->Text = "";
 #pragma endregion
 		
 			figs.reserve(10);
-
 		}
 
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -160,8 +199,15 @@ namespace KillMe {
 			pnlField->Refresh();
 			//pnlField->Invalidate();
 
+			lblInfo1->Text = gcnew String((
+					"Figs.Size: " + to_string(figs.size()) + "\n" +
+					"Figs.Capa: " + to_string(figs.capacity()) + "\n"
+				).c_str()
+			);
+
 		}
 		System::Void pnlField_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+			e->Graphics->Clear(pnlField->BackColor);
 
 			if (isFiguresSpawn) 
 				for (auto i = 0; i < figs.size(); i++) {
@@ -170,9 +216,54 @@ namespace KillMe {
 				}
 
 		}
+
+		System::Void pnlTop_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) { drugMD(sender, e); }
+		System::Void pnlTop_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) { drugMM(sender, e); }
+		System::Void pnlTop_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)   { drugMU(sender, e); }
+		System::Void pnlTop_MouseDoubleClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			WindowState = (WindowState == FormWindowState::Normal) ?
+				FormWindowState::Maximized : FormWindowState::Normal;
+		}
+
+		System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) { Close(); }
 #pragma endregion
+
+
+#pragma region Proger
+	private:
+		Point mouseOffset_;
+		bool isMouseDown_ = false;
+		int xOffset_, yOffset_;
+
+		void drugMD(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			if (e->Button == Windows::Forms::MouseButtons::Left) {
+				Control^ cont = (Control^)sender;
+				int xOffset = cont->Left; int yOffset = cont->Top;
+				if (cont->Name == Name) { xOffset = 0; yOffset = 0; }		//4
+				xOffset_ = -e->X - SystemInformation::FrameBorderSize.Width + 0 - xOffset;
+				yOffset_ = -e->Y - SystemInformation::FrameBorderSize.Height + 0 + yOffset;
+				mouseOffset_ = System::Drawing::Point(xOffset_, yOffset_);
+				isMouseDown_ = true;
+			}
+		}
+		void drugMM(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			if (isMouseDown_) {
+				Point mousePos = Control::MousePosition;
+				mousePos.Offset(mouseOffset_.X, mouseOffset_.Y);
+				Location = mousePos;
+			}
+		}
+		void drugMU(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+				if (e->Button == Windows::Forms::MouseButtons::Left) { isMouseDown_ = false; }
+			}
+#pragma endregion
+
+
+	
 
 	};
 
 }
+
+
 
