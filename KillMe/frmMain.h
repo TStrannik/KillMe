@@ -1,23 +1,3 @@
-public class CCFigure
-{
-public:
-	CCFigure() { };
-	CCFigure(int x, int y) {};
-	~CCFigure() {};
-
-	//koordinates koord;
-	//void koords(int, int);
-
-	int X;
-	int Y;
-
-	/*void repaintFigure();
-	virtual void GAVKA();*/
-private:
-
-};
-
-
 #include "Figure.h"
 #include "CFigure.h"
 
@@ -45,17 +25,11 @@ namespace KillMe {
 
 
 
-	CCFigure* fig;
-
 	bool isSpawn = false;
-	UINT16 figC = 0;
-	CCFigure* figA = new CCFigure[10];
 
-	vector <CCFigure>** figV = new vector<CCFigure> *[10];
-
-
-	vector <CCFigure> figs;
-
+	
+	vector <Figure> figs;
+	
 
 
 
@@ -160,8 +134,6 @@ namespace KillMe {
 
 #pragma region Voids
 
-	public:
-
 
 	private:
 		System::Void frmMain_Load(System::Object^ sender, System::EventArgs^ e) {
@@ -173,7 +145,9 @@ namespace KillMe {
 			pnlRight->Dock = DockStyle::Right;
 			pnlField->Dock = DockStyle::Fill;
 #pragma endregion
-			
+		
+			figs.reserve(10);
+
 		}
 
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -182,16 +156,11 @@ namespace KillMe {
 
 
 
-			figA[figC].X = 100; figA[figC].Y = 30;
-			figC++;
 
 			
-			fig = new CCFigure(); fig->X = 20; fig->Y = 30;
+			figs.push_back(Figure(300, 30));
+		
 
-
-			//figV->reserve(10);
-
-			//figV->push_back(CCFigure());
 
 
 
@@ -223,11 +192,15 @@ namespace KillMe {
 		
 			
 			if (isSpawn) {
-				g->DrawArc(pen, fig->X - r, fig->Y - r, r, r, 0, 360);
 
-				g->DrawArc(pen, figA[0].X - r, figA[0].Y - r, r, r, 0, 360);
+				String^ ass = "Gavka"; figs.at(0).name;
+				int X = figs.at(0).koord.x;
+				int Y = figs.at(0).koord.y;
 
+				g->DrawArc(pen, X - r, Y - r, r * 2, r * 2, 0, 360);
+				g->DrawString(ass, Font, txBrush, X + r, Y - Font->Size / 3, SF);
 
+				
 
 
 			}
