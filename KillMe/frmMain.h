@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
-
+#include <string>
 
 #pragma once
 
@@ -22,6 +22,7 @@ namespace KillMe {
 
 
 	bool isFiguresSpawn = false;
+	int figureCounter = 0;
 	vector <Figure> figs;
 	
 
@@ -146,8 +147,16 @@ namespace KillMe {
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			isFiguresSpawn = true;
 
-			figs.push_back(Figure(300, 30));
-			figs.push_back(Figure("ABUCA", 100, 50));
+
+			figs.push_back(
+				Figure(
+					"Gavka " + to_string(figureCounter),
+					10 + figureCounter * 100,
+					50
+				)
+			);
+			figureCounter++;
+
 
 			pnlField->Refresh();
 			//pnlField->Invalidate();
@@ -156,8 +165,10 @@ namespace KillMe {
 		System::Void pnlField_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 
 			if (isFiguresSpawn) 
-				for (auto i = 0; i < figs.size(); i++) 
+				for (auto i = 0; i < figs.size(); i++) {
 					figs.at(i).repaintFigure(sender, e);
+					cout << i << endl;
+				}
 
 		}
 #pragma endregion

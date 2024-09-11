@@ -39,7 +39,7 @@ void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::Paint
 #pragma region def
 	Graphics^ g = e->Graphics;
 	g->SmoothingMode = Drawing2D::SmoothingMode::AntiAlias;
-	g->Clear(Color::LightYellow);
+	//g->Clear(Color::LightYellow);
 	uint8_t w = p->Width - 1, h = p->Height - 1;
 	uint8_t r = 5;
 
