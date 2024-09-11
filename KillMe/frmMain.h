@@ -77,11 +77,11 @@ namespace KillMe {
 			   // 
 			   // pnlTop
 			   // 
-			   this->pnlTop->BackColor = System::Drawing::Color::Black;
+			   this->pnlTop->BackColor = System::Drawing::Color::DimGray;
 			   this->pnlTop->Controls->Add(this->btnClose);
 			   this->pnlTop->Location = System::Drawing::Point(41, 54);
 			   this->pnlTop->Name = L"pnlTop";
-			   this->pnlTop->Size = System::Drawing::Size(360, 30);
+			   this->pnlTop->Size = System::Drawing::Size(361, 30);
 			   this->pnlTop->TabIndex = 2;
 			   this->pnlTop->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlTop_MouseDoubleClick);
 			   this->pnlTop->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlTop_MouseDown);
@@ -92,9 +92,11 @@ namespace KillMe {
 			   // 
 			   this->btnClose->Dock = System::Windows::Forms::DockStyle::Right;
 			   this->btnClose->FlatAppearance->BorderSize = 0;
+			   this->btnClose->FlatAppearance->MouseDownBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)),
+				   static_cast<System::Int32>(static_cast<System::Byte>(192)), static_cast<System::Int32>(static_cast<System::Byte>(192)));
 			   this->btnClose->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			   this->btnClose->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			   this->btnClose->Location = System::Drawing::Point(325, 0);
+			   this->btnClose->Location = System::Drawing::Point(326, 0);
 			   this->btnClose->Name = L"btnClose";
 			   this->btnClose->Size = System::Drawing::Size(35, 30);
 			   this->btnClose->TabIndex = 1;
@@ -104,10 +106,10 @@ namespace KillMe {
 			   // 
 			   // pnlBottom
 			   // 
-			   this->pnlBottom->BackColor = System::Drawing::Color::Black;
+			   this->pnlBottom->BackColor = System::Drawing::Color::DimGray;
 			   this->pnlBottom->Location = System::Drawing::Point(41, 257);
 			   this->pnlBottom->Name = L"pnlBottom";
-			   this->pnlBottom->Size = System::Drawing::Size(360, 50);
+			   this->pnlBottom->Size = System::Drawing::Size(361, 50);
 			   this->pnlBottom->TabIndex = 3;
 			   // 
 			   // pnlField
@@ -186,11 +188,20 @@ namespace KillMe {
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			isFiguresSpawn = true;
 
-			figs.push_back(
+			/*figs.push_back(
 				Figure(
 					"Gavka " + to_string(figureCounter),
 					10 + figureCounter * 100,
 					50
+				)
+			);*/
+
+			figs.push_back(
+				Figure(
+					"Gavka " + to_string(figureCounter),
+					10 + figureCounter * 100,
+					50,
+					30, 10
 				)
 			);
 			figureCounter++;

@@ -6,32 +6,60 @@ using namespace System::Windows;
 using namespace System::Windows::Forms;
 using namespace System::Drawing;
 
+
+void Figure::FSet(_Figurist figure_data) {
+	this->name = figure_data.name;
+	koords(figure_data.x, figure_data.y);
+	sizes(figure_data.w, figure_data.h);
+}
+
 Figure::Figure()
 {
-	this->name = "Osas";	
-	this->koord.x = 10;
-	this->koord.y = 10;
-	//repaintFigure();
+	FSet({ "", 10, 10, 0, 0 });
+
+	/*this->name = "";
+	koords(10, 10);
+	sizes(0, 0);*/
 }
 Figure::Figure(int x, int y)
 {	
-	this->koord.x = x;
-	this->koord.y = y;
-	this->name = "Ubemugbe "; // +x + " " + y;
-	//repaintFigure();
+	FSet({ "", x, y, 0, 0 });
+
+	/*this->name = "";
+	koords(x, y);
+	sizes(0, 0);	*/
 }
-Figure::Figure(std::string name, int x, int y) {
-	this->koord.x = x;
-	this->koord.y = y;
+Figure::Figure(std::string name, int x, int y)
+{
+	FSet({ name, x, y, 0, 0 });
+
+	/*this->name = name;
+	koords(x, y);
+	sizes(0, 0);	*/
+}
+Figure::Figure(int x, int y, int w, int h)
+{
+	FSet({ "", x, y, w, h });
+
+	/*this->name = "Figure";
+	koords(x, y);
+	sizes(w, h);	*/
+}
+Figure::Figure(std::string name, int x, int y, int w, int h)
+{
 	this->name = name;
-	//repaintFigure();
+	koords(x, y);
+	sizes(w, h);
 }
 
-
+void Figure::koords(int x, int y) { this->koord.x = x; this->koord.y = y; }
+void Figure::sizes(int w, int h)  { this->size.w = w;  this->size.h = h;  }
 
 
 void Figure::GAVKA() { cout << "Figure::GAVKA" << endl; }
-void Figure::koords(int x, int y) { this->koord.x = x; this->koord.y = y; }
+
+
+
 
 void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 	cout << "repaintFigure" << endl;
@@ -39,9 +67,9 @@ void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::Paint
 #pragma region def
 	Graphics^ g = e->Graphics;
 	g->SmoothingMode = Drawing2D::SmoothingMode::AntiAlias;
-	//g->Clear(Color::LightYellow);
+	
 	uint8_t w = p->Width - 1, h = p->Height - 1;
-	uint8_t r = 5;
+	uint8_t r = 1;
 
 	Font^ font = p->Font;
 	StringFormat^ SF = gcnew StringFormat;
@@ -56,7 +84,12 @@ void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::Paint
 	int X = this->koord.x;
 	int Y = this->koord.y;
 
+
 	g->DrawArc(pen, X - r, Y - r, r * 2, r * 2, 0, 360);
-	g->DrawString(str, font, txBrush, X + r, Y - font->Size / 3, SF);
+
+	if (w != 0 && h != 0) 
+		g->DrawArc(pen, X - w, Y - h, w * 2, h * 2, 0, 360);
+
+	g->DrawString(str, font, txBrush, X + r, Y - font->Size / 2, SF);
 
 }
