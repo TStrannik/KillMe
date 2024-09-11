@@ -18,13 +18,15 @@ namespace KillMe {
 	using namespace System::Drawing;
 	using namespace std;
 	
-
-
-
+	
+	
 	bool isFiguresSpawn = false;
 	UINT8 figureCounter = 0;
 	vector <Figure> figs;
+
+
 	
+
 
 
 	public ref class frmMain : public System::Windows::Forms::Form

@@ -19,12 +19,15 @@ void Figure::__FSet(_Figurist figure_data) {
 	this->name = figure_data.name;
 	koords(figure_data.x, figure_data.y);
 	sizes(figure_data.w, figure_data.h);
+
+	cout << "Figure set" << endl;
 	
 }
 
 void Figure::koords(int x, int y) { this->koord.x = x; this->koord.y = y; }
 void Figure::sizes(int w, int h)  { this->size.w = w;  this->size.h = h;  }
 
+void Figure::Click() { cout << "\tFigure::Click()" << endl; }
 
 void Figure::GAVKA() { cout << "\tFigure::GAVKA" << endl; }
 

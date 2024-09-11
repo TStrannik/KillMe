@@ -53,6 +53,8 @@ public:
 	virtual void GAVKA();
 
 	
+
+	void Click();
 	
 
 private:
