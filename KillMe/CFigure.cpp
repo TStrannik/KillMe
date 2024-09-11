@@ -15,3 +15,5 @@ void CFigure::GAVKA() { cout << "Figure::GAVKA" << endl; }
 void CFigure::repaintFigure() {
 	cout << "repaintFigure" << endl;
 }
+
+

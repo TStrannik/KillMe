@@ -1,25 +1,37 @@
+#include <Windows.h>
+#include <iostream>
+
 #pragma once
 
-ref struct koordinates { int x; int y; };
+using namespace System;
 
-ref class Figure
+//ref struct koordinates { int x; int y; };
+
+public class Figure
 {
 public:
-	 Figure() { repaintFigure(); };
+	 Figure();
 	 Figure(int x, int y);
 	~Figure() {};
 
-	koordinates koord;
-	void koords(int, int);
+	//koordinates koord;
+	//void koords(int, int);
+	int X;
+	int Y;
+
+	std::string name;
+
 
 
 	void repaintFigure();
 	virtual void GAVKA();
 
+	
+
 
 private:
 	int _id;
-	
+
 
 };
 

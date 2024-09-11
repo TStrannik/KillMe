@@ -1,11 +1,31 @@
+public class CCFigure
+{
+public:
+	CCFigure() { };
+	CCFigure(int x, int y) {};
+	~CCFigure() {};
+
+	//koordinates koord;
+	//void koords(int, int);
+
+	int X;
+	int Y;
+
+	/*void repaintFigure();
+	virtual void GAVKA();*/
+private:
+
+};
 
 
 #include "Figure.h"
 #include "CFigure.h"
 
 #include <Windows.h>
+#include <iostream>
 #include <vector>
 #include <array>
+
 
 #pragma once
 
@@ -19,6 +39,7 @@ namespace KillMe {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace std;
+	
 
 	public ref class frmMain : public System::Windows::Forms::Form
 	{
@@ -122,10 +143,27 @@ namespace KillMe {
 #pragma region Voids
 
 	public:
-		Figure fig0;
-		Figure^ figa = gcnew Figure(200, 20);
+		/*Figure fig;
+		Figure^ fig0;
+		Figure^ fig1;
+
+		vector<Figure^> *figs;*/
+
+		CCFigure *fig = new CCFigure();
 		
-		//CFigure fAra[10];
+		UINT16 figC = 0;
+		CCFigure* figA = new CCFigure[10];
+
+		
+		//CCFigure fig;
+		
+
+
+
+
+		//Figure fig0;	// good if ref&ref
+		//Figure^ figa = gcnew Figure(200, 20); // good if ref&ref
+
 
 	private:
 		System::Void frmMain_Load(System::Object^ sender, System::EventArgs^ e) {
@@ -136,25 +174,49 @@ namespace KillMe {
 			pnlField->Dock = DockStyle::Fill;
 
 
-			fig0.koord.x = 50;
-			fig0.koord.y = 20;
 
-
-		
 			// CFigure fAra[10];	// WORK
 			//vector <CFigure> figs;
 
+
+			/*vector <Figure^> figs;*/
 			
+			
+
+			/*fig0 = gcnew Figure();
+			fig0->koord.x = 50;
+			fig0->koord.y = 20;
+
+			fig1 = gcnew Figure();*/
+
+
+			//figs->push_back(gcnew Figure());
+			
+
+			cout << endl;
+
+			//afigs[0] = new Figure();
+
+
+
+			//figs->push_back(Figure(200, 200));
+			//figs->push_back(Figure());
+
 			
 			
 		}
 
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
-			//Figure^ figa = gcnew Figure(200, 20);
-			//figa->koords(200, 20);
 
-			vector <Figure> figs;
-			figs[0] = gcnew Figure(200, 20);
+			
+			//figs->push_back(Figure(200, 200));
+
+			/*fig.koord.x = 300;
+			fig.koord.y = 30;*/
+
+			//figA[figC] = new CCFigure();
+			figA[figC].X = 100; figA[figC].Y = 30;
+			figC++;
 
 
 			pnlField->Refresh();
@@ -164,23 +226,46 @@ namespace KillMe {
 		System::Void pnlField_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 			Graphics^ g = e->Graphics;
 			g->SmoothingMode = Drawing2D::SmoothingMode::AntiAlias;
+			//g->Clear(pnlField->BackColor);
+			g->Clear(Color::White);
 
 			uint8_t w = pnlField->Width - 1, h = pnlField->Height - 1;
 			uint8_t r = 10;
 
+			StringFormat^ SF = gcnew StringFormat;
+			SF->Alignment = StringAlignment::Near;
+			SF->LineAlignment = StringAlignment::Near;
+
 			Pen^ pen = gcnew Pen(Color::Black);
+			Brush^ txBrush = gcnew SolidBrush(Color::Black);
 
-			g->DrawArc(pen, fig0.koord.x - r, fig0.koord.y - r, r, r, 0, 360);
 
-			Figure fig2(110, 120);
+
+
+			/*g->DrawArc(pen, fig.koord.x - r, fig.koord.y - r, r, r, 0, 360);
+			g->DrawString(fig.name, Font, txBrush, fig.koord.x, fig.koord.y, SF);*/
+
+			g->DrawArc(pen, fig[0].X - r, fig[0].Y - r, r, r, 0, 360);
+			
+
+
+
+			/*g->DrawArc(pen, fig0->koord.x - r, fig0->koord.y - r, r, r, 0, 360);
+			g->DrawArc(pen, fig1->koord.x - r, fig1->koord.y - r, r, r, 0, 360);
+			g->DrawString(fig0->name, Font, txBrush, fig0->koord.x, fig0->koord.y, SF);
+			g->DrawString(fig1->name, Font, txBrush, fig1->koord.x, fig1->koord.y, SF);*/
+
+
+
+			/*Figure fig2(110, 120);
 			g->DrawArc(pen, fig2.koord.x - r, fig2.koord.y - r, r, r, 0, 360);
+			g->DrawString(fig2.name, Font, txBrush, fig2.koord.x, fig2.koord.y, SF);*/
 
-			g->DrawArc(pen, figa->koord.x - r, figa->koord.y - r, r, r, 0, 360);
-
-
-
+			//g->DrawArc(pen, figs->at(0).koord.x - r, figs->at(0).koord.y - r, r, r, 0, 360);
 		}
 #pragma endregion
 
 	};
+
 }
+
