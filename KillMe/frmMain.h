@@ -22,7 +22,7 @@ namespace KillMe {
 
 
 	bool isFiguresSpawn = false;
-	int figureCounter = 0;
+	UINT8 figureCounter = 0;
 	vector <Figure> figs;
 	
 
@@ -95,6 +95,8 @@ namespace KillMe {
 			   this->btnClose->FlatAppearance->MouseDownBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)),
 				   static_cast<System::Int32>(static_cast<System::Byte>(192)), static_cast<System::Int32>(static_cast<System::Byte>(192)));
 			   this->btnClose->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			   this->btnClose->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				   static_cast<System::Byte>(204)));
 			   this->btnClose->ForeColor = System::Drawing::SystemColors::ControlLightLight;
 			   this->btnClose->Location = System::Drawing::Point(326, 0);
 			   this->btnClose->Name = L"btnClose";
@@ -181,12 +183,27 @@ namespace KillMe {
 
 			lblInfo1->Text = "";
 #pragma endregion
-		
+
+#pragma region BUF
+			SetStyle(
+				ControlStyles::AllPaintingInWmPaint |
+				ControlStyles::OptimizedDoubleBuffer |
+				ControlStyles::ResizeRedraw |
+				ControlStyles::SupportsTransparentBackColor |
+				ControlStyles::UserPaint, true
+			);
+			DoubleBuffered = true;
+#pragma endregion
+
 			figs.reserve(10);
 		}
 
+		int COL = 50;
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			isFiguresSpawn = true;
+
+			
+
 
 			/*figs.push_back(
 				Figure(
@@ -198,13 +215,18 @@ namespace KillMe {
 
 			figs.push_back(
 				Figure(
-					"Gavka " + to_string(figureCounter),
-					10 + figureCounter * 100,
-					50,
-					30, 10
+					to_string(figureCounter) + " Manul",
+					100 + figureCounter % 7 * 100,
+					COL,
+					50, 
+					20
 				)
 			);
 			figureCounter++;
+
+			if (figureCounter % 7 == 0) COL += 50;
+
+			
 
 
 			pnlField->Refresh();
@@ -221,10 +243,8 @@ namespace KillMe {
 			e->Graphics->Clear(pnlField->BackColor);
 
 			if (isFiguresSpawn) 
-				for (auto i = 0; i < figs.size(); i++) {
+				for (auto i = 0; i < figs.size(); i++)
 					figs.at(i).repaintFigure(sender, e);
-					cout << i << endl;
-				}
 
 		}
 
