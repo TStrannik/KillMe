@@ -43,6 +43,8 @@ namespace KillMe {
 	private: System::Windows::Forms::Button^ btnRespawn;
 	private: System::Windows::Forms::Label^ lblInfo1;
 	private: System::Windows::Forms::Button^ btnClose;
+	private: System::Windows::Forms::Label^ lblInfo2;
+	private: System::Windows::Forms::Label^ lblInfo3;
 	private: System::ComponentModel::Container^ components;
 #pragma endregion Kernel
 
@@ -55,8 +57,10 @@ namespace KillMe {
 			   this->btnClose = (gcnew System::Windows::Forms::Button());
 			   this->pnlBottom = (gcnew System::Windows::Forms::Panel());
 			   this->pnlField = (gcnew System::Windows::Forms::Panel());
+			   this->lblInfo2 = (gcnew System::Windows::Forms::Label());
 			   this->lblInfo1 = (gcnew System::Windows::Forms::Label());
 			   this->btnRespawn = (gcnew System::Windows::Forms::Button());
+			   this->lblInfo3 = (gcnew System::Windows::Forms::Label());
 			   this->pnlTop->SuspendLayout();
 			   this->pnlField->SuspendLayout();
 			   this->SuspendLayout();
@@ -119,6 +123,8 @@ namespace KillMe {
 			   // pnlField
 			   // 
 			   this->pnlField->BackColor = System::Drawing::Color::White;
+			   this->pnlField->Controls->Add(this->lblInfo3);
+			   this->pnlField->Controls->Add(this->lblInfo2);
 			   this->pnlField->Controls->Add(this->lblInfo1);
 			   this->pnlField->Controls->Add(this->btnRespawn);
 			   this->pnlField->Location = System::Drawing::Point(97, 91);
@@ -126,6 +132,18 @@ namespace KillMe {
 			   this->pnlField->Size = System::Drawing::Size(249, 160);
 			   this->pnlField->TabIndex = 1;
 			   this->pnlField->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &frmMain::pnlField_Paint);
+			   this->pnlField->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlField_MouseMove);
+			   // 
+			   // lblInfo2
+			   // 
+			   this->lblInfo2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
+			   this->lblInfo2->AutoSize = true;
+			   this->lblInfo2->Location = System::Drawing::Point(205, 118);
+			   this->lblInfo2->Name = L"lblInfo2";
+			   this->lblInfo2->Size = System::Drawing::Size(41, 13);
+			   this->lblInfo2->TabIndex = 2;
+			   this->lblInfo2->Text = L"lblInfo2";
+			   this->lblInfo2->TextAlign = System::Drawing::ContentAlignment::TopRight;
 			   // 
 			   // lblInfo1
 			   // 
@@ -133,9 +151,9 @@ namespace KillMe {
 			   this->lblInfo1->AutoSize = true;
 			   this->lblInfo1->Location = System::Drawing::Point(3, 118);
 			   this->lblInfo1->Name = L"lblInfo1";
-			   this->lblInfo1->Size = System::Drawing::Size(35, 13);
+			   this->lblInfo1->Size = System::Drawing::Size(41, 13);
 			   this->lblInfo1->TabIndex = 1;
-			   this->lblInfo1->Text = L"label1";
+			   this->lblInfo1->Text = L"lblInfo1";
 			   // 
 			   // btnRespawn
 			   // 
@@ -148,6 +166,16 @@ namespace KillMe {
 			   this->btnRespawn->Text = L"Spawn";
 			   this->btnRespawn->UseVisualStyleBackColor = true;
 			   this->btnRespawn->Click += gcnew System::EventHandler(this, &frmMain::btnRespawn_Click);
+			   // 
+			   // lblInfo3
+			   // 
+			   this->lblInfo3->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			   this->lblInfo3->AutoSize = true;
+			   this->lblInfo3->Location = System::Drawing::Point(3, 9);
+			   this->lblInfo3->Name = L"lblInfo3";
+			   this->lblInfo3->Size = System::Drawing::Size(41, 13);
+			   this->lblInfo3->TabIndex = 3;
+			   this->lblInfo3->Text = L"lblInfo3";
 			   // 
 			   // frmMain
 			   // 
@@ -183,7 +211,7 @@ namespace KillMe {
 			pnlRight->Dock = DockStyle::Right;
 			pnlField->Dock = DockStyle::Fill;
 
-			lblInfo1->Text = "";
+			lblInfo1->Text = ""; lblInfo2->Text = ""; lblInfo3->Text = "";
 #pragma endregion
 
 #pragma region BUF
@@ -204,8 +232,6 @@ namespace KillMe {
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			isFiguresSpawn = true;
 
-			
-
 
 			/*figs.push_back(
 				Figure(
@@ -217,7 +243,8 @@ namespace KillMe {
 
 			figs.push_back(
 				Figure(
-					to_string(figureCounter) + " Manul",
+					figureCounter + 1,
+					"Manul " + to_string(figureCounter + 1),
 					100 + figureCounter % 7 * 100,
 					COL,
 					50, 
@@ -243,11 +270,30 @@ namespace KillMe {
 		}
 		System::Void pnlField_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 			e->Graphics->Clear(pnlField->BackColor);
+			//SwapBuffers
 
 			if (isFiguresSpawn) 
 				for (auto i = 0; i < figs.size(); i++)
 					figs.at(i).repaintFigure(sender, e);
 
+		}
+		System::Void pnlField_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+
+			int x = e->X;
+			int y = e->Y;
+			lblInfo2->Text = x.ToString() +  ":" + y.ToString();
+
+
+			if (isFiguresSpawn)
+				for (auto i = 0; i < figs.size(); i++) {
+					lblInfo3->Text = gcnew String((
+						"Manul " + to_string(figs.at(i).MouseMove(x, y))
+						).c_str()
+					);
+
+					//figs.at(i).MouseMove(x, y);
+				}
+					
 		}
 
 		System::Void pnlTop_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) { drugMD(sender, e); }
@@ -294,6 +340,7 @@ namespace KillMe {
 
 	
 
+	
 	};
 
 }
