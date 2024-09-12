@@ -54,7 +54,7 @@ public:
 		/// <param name="h">Высота контейнера объекта</param>
 	 Figure(int32_t id, std::string name, int x, int y, int width, int height);
 
-	 ~Figure() { std::cout << "\t~Figure()" << std::endl; };
+	 ~Figure() { std::cout << "\t\t~Figure()" << std::endl; };
 #pragma endregion
 
 
@@ -73,7 +73,8 @@ public:
 	uint32_t MouseMove(int x, int y);
 
 	
-	bool entered;
+	bool entered  = false;
+	bool selected = false;
 	void MouseClick(uint8_t button);
 #pragma endregion
 	

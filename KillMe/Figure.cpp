@@ -27,7 +27,14 @@ void Figure::__FSet(_Figurist figure_data) {
 	koords(figure_data.x, figure_data.y);
 	sizes(figure_data.w, figure_data.h);
 
-	cout << "Figure set" << endl;
+
+
+	entered  = false;
+	selected = false;
+
+
+
+	cout << "\tFigure set" << endl;
 	
 }
 void Figure::koords(int x, int y) { this->koord.x = x; this->koord.y = y; }
@@ -51,14 +58,7 @@ uint32_t Figure::MouseMove(int x, int y) {
 	
 	bool cond1 = (x >= L) && (x <= R);
 	bool cond2 = (y >= T) && (y <= B);
-	//bool once = false;
-	if (cond1 && cond2) {
-		entered = true;
-		//cout << "\tManul " << _id << endl << x << ":" << y << endl;
-	}
-	else {
-		entered = false;
-	}
+	entered = cond1 && cond2;
 		
 	return _id;
 }
@@ -72,9 +72,19 @@ uint32_t Figure::MouseMove(int x, int y) {
 #pragma region Painting
 void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 	Panel^ p = (Panel^)sender;
+
+
+
 #pragma region def
+	
 	Graphics^ g = e->Graphics;
 	g->SmoothingMode = Drawing2D::SmoothingMode::AntiAlias;
+
+	/*BufferedGraphics^ bg = BufferedGraphicsManager::Current->Allocate(e->Graphics, p->ClientRectangle);
+	bg->Graphics->SmoothingMode = Drawing2D::SmoothingMode::AntiAlias;*/
+
+
+	Drawing2D::GraphicsPath^ gp = gcnew Drawing2D::GraphicsPath();
 
 	uint8_t w = p->Width - 1, h = p->Height - 1;
 	uint8_t r = 1;
@@ -84,10 +94,15 @@ void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::Paint
 	SF->Alignment = StringAlignment::Near;
 	SF->LineAlignment = StringAlignment::Near;
 
-	Pen^ pen = gcnew Pen(Color::Black);
-	Brush^ txBrush = gcnew SolidBrush(Color::Black);
+	Pen^ pen = gcnew Pen(Color::Red);
+	Brush^ txBrush  = gcnew SolidBrush(Color::Black);
+	/*Brush^ bgBrush  = gcnew SolidBrush(Color::Transparent);*/
+	Brush^ bgBrush = gcnew SolidBrush(Color::White);
+	Brush^ bgBrushE = gcnew SolidBrush(Color::Yellow);
 	
 #pragma endregion
+
+
 
 #pragma region drawing
 	String^ str = gcnew String(this->name.c_str());
@@ -96,23 +111,50 @@ void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::Paint
 	int W = this->size.w;
 	int H = this->size.h;
 
-	g->DrawArc(pen, X - r, Y - r, r * 2, r * 2, 0, 360);
 
 	if (w != 0 && h != 0) {
+		
 		g->DrawLine(pen, X - W / 2, Y - H / 2, X + W / 2, Y - H / 2);
 		g->DrawLine(pen, X + W / 2, Y - H / 2, X + W / 2, Y + H / 2);
-		g->DrawLine(pen, X - W / 2, Y + H / 2, X + W / 2, Y + H / 2);
+		g->DrawLine(pen, X + W / 2, Y + H / 2, X - W / 2, Y + H / 2);
 		g->DrawLine(pen, X - W / 2, Y - H / 2, X - W / 2, Y + H / 2);
 
-		//g->DrawArc(pen, X - W / 2, Y - H / 2, W, H, 0, 360);
+		/*bg->Graphics->DrawLine(pen, X - W / 2, Y - H / 2, X + W / 2, Y - H / 2);
+		bg->Graphics->DrawLine(pen, X + W / 2, Y - H / 2, X + W / 2, Y + H / 2);
+		bg->Graphics->DrawLine(pen, X + W / 2, Y + H / 2, X - W / 2, Y + H / 2);
+		bg->Graphics->DrawLine(pen, X - W / 2, Y - H / 2, X - W / 2, Y + H / 2);*/
+
+		/////g->DrawArc(pen, X - W / 2, Y - H / 2, W, H, 0, 360);
+
+		gp->StartFigure();
+		gp->AddLine(X - W / 2, Y - H / 2, X + W / 2, Y - H / 2);
+		gp->AddLine(X + W / 2, Y - H / 2, X + W / 2, Y + H / 2);
+		gp->AddLine(X + W / 2, Y + H / 2, X - W / 2, Y + H / 2);
+		gp->AddLine(X - W / 2, Y - H / 2, X - W / 2, Y + H / 2);
+		gp->CloseFigure();
+
+		if (entered)  g->FillPath(bgBrushE, gp);
+		if (!entered) g->FillPath(bgBrush, gp);
+		/*if (entered)  bg->Graphics->FillPath(bgBrushE, gp);
+		if (!entered) bg->Graphics->FillPath(bgBrush, gp);*/
+		
+		if (selected) g->DrawArc(pen, X - r, Y - r, r * 5, r * 5, 0, 360);
+		if (!selected)  g->DrawArc(pen, X - r, Y - r, r * 2, r * 2, 0, 360);
+		/*if (selected)	bg->Graphics->DrawArc(pen, X - r, Y - r, r * 5, r * 5, 0, 360);
+		if (!selected)  bg->Graphics->DrawArc(pen, X - r, Y - r, r * 2, r * 2, 0, 360); */
+
 	}
 		
 	
 
 
 	
-
+	//bg->Graphics->DrawString(str, font, txBrush, X + r + W / 2, Y - font->Size / 2, SF);
 	g->DrawString(str, font, txBrush, X + r + W / 2, Y - font->Size / 2, SF);
+
+	/*bg->Render();
+	delete bg;*/
+
 #pragma endregion
 
 }

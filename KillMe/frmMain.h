@@ -6,6 +6,7 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <thread>
 
 #pragma once
 
@@ -22,9 +23,7 @@ namespace KillMe {
 	
 	bool isFiguresSpawn = false;
 	UINT8 figureCounter = 0;
-	vector <Figure> figs;
-
-
+	vector <Figure*> figs;
 	
 
 
@@ -45,6 +44,8 @@ namespace KillMe {
 	private: System::Windows::Forms::Button^ btnClose;
 	private: System::Windows::Forms::Label^ lblInfo2;
 	private: System::Windows::Forms::Label^ lblInfo3;
+	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Button^ btnInfo;
 	private: System::ComponentModel::Container^ components;
 #pragma endregion Kernel
 
@@ -56,12 +57,15 @@ namespace KillMe {
 			   this->pnlTop = (gcnew System::Windows::Forms::Panel());
 			   this->btnClose = (gcnew System::Windows::Forms::Button());
 			   this->pnlBottom = (gcnew System::Windows::Forms::Panel());
+			   this->btnInfo = (gcnew System::Windows::Forms::Button());
 			   this->pnlField = (gcnew System::Windows::Forms::Panel());
+			   this->button1 = (gcnew System::Windows::Forms::Button());
 			   this->lblInfo3 = (gcnew System::Windows::Forms::Label());
 			   this->lblInfo2 = (gcnew System::Windows::Forms::Label());
 			   this->lblInfo1 = (gcnew System::Windows::Forms::Label());
 			   this->btnRespawn = (gcnew System::Windows::Forms::Button());
 			   this->pnlTop->SuspendLayout();
+			   this->pnlBottom->SuspendLayout();
 			   this->pnlField->SuspendLayout();
 			   this->SuspendLayout();
 			   // 
@@ -115,14 +119,29 @@ namespace KillMe {
 			   // pnlBottom
 			   // 
 			   this->pnlBottom->BackColor = System::Drawing::Color::DimGray;
+			   this->pnlBottom->Controls->Add(this->btnInfo);
 			   this->pnlBottom->Location = System::Drawing::Point(41, 257);
 			   this->pnlBottom->Name = L"pnlBottom";
 			   this->pnlBottom->Size = System::Drawing::Size(361, 50);
 			   this->pnlBottom->TabIndex = 3;
 			   // 
+			   // btnInfo
+			   // 
+			   this->btnInfo->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
+			   this->btnInfo->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			   this->btnInfo->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			   this->btnInfo->Location = System::Drawing::Point(25, 14);
+			   this->btnInfo->Name = L"btnInfo";
+			   this->btnInfo->Size = System::Drawing::Size(75, 23);
+			   this->btnInfo->TabIndex = 1;
+			   this->btnInfo->Text = L"Info";
+			   this->btnInfo->UseVisualStyleBackColor = true;
+			   this->btnInfo->Click += gcnew System::EventHandler(this, &frmMain::btnInfo_Click);
+			   // 
 			   // pnlField
 			   // 
 			   this->pnlField->BackColor = System::Drawing::Color::White;
+			   this->pnlField->Controls->Add(this->button1);
 			   this->pnlField->Controls->Add(this->lblInfo3);
 			   this->pnlField->Controls->Add(this->lblInfo2);
 			   this->pnlField->Controls->Add(this->lblInfo1);
@@ -133,7 +152,21 @@ namespace KillMe {
 			   this->pnlField->TabIndex = 1;
 			   this->pnlField->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &frmMain::pnlField_Paint);
 			   this->pnlField->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlField_MouseClick);
+			   this->pnlField->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlField_MouseDown);
 			   this->pnlField->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlField_MouseMove);
+			   this->pnlField->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlField_MouseUp);
+			   // 
+			   // button1
+			   // 
+			   this->button1->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
+			   this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			   this->button1->Location = System::Drawing::Point(169, 134);
+			   this->button1->Name = L"button1";
+			   this->button1->Size = System::Drawing::Size(56, 23);
+			   this->button1->TabIndex = 4;
+			   this->button1->Text = L"Refresh";
+			   this->button1->UseVisualStyleBackColor = true;
+			   this->button1->Click += gcnew System::EventHandler(this, &frmMain::button1_Click);
 			   // 
 			   // lblInfo3
 			   // 
@@ -148,7 +181,7 @@ namespace KillMe {
 			   // 
 			   this->lblInfo2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			   this->lblInfo2->AutoSize = true;
-			   this->lblInfo2->Location = System::Drawing::Point(205, 118);
+			   this->lblInfo2->Location = System::Drawing::Point(184, 118);
 			   this->lblInfo2->Name = L"lblInfo2";
 			   this->lblInfo2->Size = System::Drawing::Size(41, 13);
 			   this->lblInfo2->TabIndex = 2;
@@ -189,8 +222,10 @@ namespace KillMe {
 			   this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			   this->Name = L"frmMain";
 			   this->Text = L"frmMain";
+			   this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &frmMain::frmMain_FormClosed);
 			   this->Load += gcnew System::EventHandler(this, &frmMain::frmMain_Load);
 			   this->pnlTop->ResumeLayout(false);
+			   this->pnlBottom->ResumeLayout(false);
 			   this->pnlField->ResumeLayout(false);
 			   this->pnlField->PerformLayout();
 			   this->ResumeLayout(false);
@@ -215,14 +250,14 @@ namespace KillMe {
 #pragma endregion
 
 #pragma region BUF
-			SetStyle(
+			this->SetStyle(
 				ControlStyles::AllPaintingInWmPaint |
 				ControlStyles::OptimizedDoubleBuffer |
 				ControlStyles::ResizeRedraw |
 				ControlStyles::SupportsTransparentBackColor |
 				ControlStyles::UserPaint, true
 			);
-			DoubleBuffered = true;
+			this->DoubleBuffered = true;
 #pragma endregion
 
 			figs.reserve(10);
@@ -230,26 +265,16 @@ namespace KillMe {
 
 		int COL = 50;
 		int selObj = -1;
+		int focObj = -1;
+		int entObj = -1;
+		bool drag = false;
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			isFiguresSpawn = true;
 
-
-			/*figs.push_back(
-				Figure(
-					"Gavka " + to_string(figureCounter),
-					10 + figureCounter * 100,
-					50
-				)
-			);*/
-
 			figs.push_back(
-				Figure(
-					figureCounter,
-					"Manul " + to_string(figureCounter),
-					100 + figureCounter % 8 * 100,
-					COL,
-					50, 
-					20
+				new Figure(
+					figureCounter, "Manul " + to_string(figureCounter),
+					100 + figureCounter % 8 * 100, COL, 50, 20
 				)
 			);
 			figureCounter++;
@@ -258,9 +283,11 @@ namespace KillMe {
 
 			
 
-
+			//this->Refresh();
 			pnlField->Refresh();
 			//pnlField->Invalidate();
+			
+
 
 			lblInfo1->Text = gcnew String((
 					"Figs.Size: " + to_string(figs.size()) + "\n" +
@@ -269,47 +296,120 @@ namespace KillMe {
 			);
 
 		}
-		System::Void pnlField_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-			e->Graphics->Clear(pnlField->BackColor);
-			//SwapBuffers
 
+		
+
+		System::Void pnlField_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+			/*BufferedGraphics^ bg = 
+				BufferedGraphicsManager::Current->Allocate(
+					e->Graphics, pnlField->ClientRectangle);
+			bg->Graphics->SmoothingMode = Drawing2D::SmoothingMode::AntiAlias;*/
+
+			//bg->Graphics->Clear(pnlField->BackColor);
+			//bg->Render();
+			//delete bg;
+
+			e->Graphics->Clear(pnlField->BackColor);
+			
 			if (isFiguresSpawn) 
 				for (auto i = 0; i < figs.size(); i++)
-					figs.at(i).repaintFigure(sender, e);
+					figs.at(i)->repaintFigure(sender, e);
 
-		}
-		System::Void pnlField_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			int x = e->X; int y = e->Y;
 			
-			if (isFiguresSpawn)
-			{
-				for (auto i = 0; i < figs.size(); i++)
-				{
-					figs.at(i).MouseMove(x, y);
-					if (figs.at(i).entered) selObj = i;
-				}
-
-				lblInfo3->Text = gcnew String(("Manul " + to_string(selObj)).c_str());
-			}
+			
 
 		}
 		System::Void pnlField_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 		{
-			if (figureCounter != 0 && selObj != -1) {
+			/*if (figureCounter != 0 && entObj != -1) {
 
-				if (e->Button == System::Windows::Forms::MouseButtons::Left)
-					if (figs.at(selObj).entered) figs.at(selObj).MouseClick(0x01);
+				if (e->Button == System::Windows::Forms::MouseButtons::Left) {
+					if (figs.at(selObj).entered)
+						{
+							selObj = entObj;
 
-				if (e->Button == System::Windows::Forms::MouseButtons::Right)
-					if (figs.at(selObj).entered) figs.at(selObj).MouseClick(0x02);
+							figs.at(selObj).MouseClick(0x01);
+							figs.at(selObj).selected = true;
+							lblInfo2->Text = figs.at(selObj).selected ? "sel" : "unsel";
+						}
+					else
+						{
+							figs.at(selObj).selected = false;
+							lblInfo2->Text = figs.at(selObj).selected ? "sel" : "unsel";
+							selObj = -1;
+						}
+				}
 
-				if (e->Button == System::Windows::Forms::MouseButtons::Right)
-				{
-					if (figs.at(selObj).entered) figs.at(selObj).koord.y += 50;
+				if (e->Button == System::Windows::Forms::MouseButtons::Right) {
+					if (figs.at(selObj).entered)
+						{
+							selObj = entObj;
+
+							figs.at(selObj).MouseClick(0x02);
+							figs.at(selObj).selected = true;
+							lblInfo2->Text = figs.at(selObj).selected ? "sel" : "unsel";
+						}
+					else 
+						{
+							figs.at(selObj).selected = false;
+							lblInfo2->Text = figs.at(selObj).selected ? "sel" : "unsel";
+							selObj = -1;
+						}
+				}
+				
+				
+			}*/
+			
+
+			
+
+
+			
+		}
+		System::Void pnlField_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			int x = e->X; int y = e->Y;
+
+			if (isFiguresSpawn) {
+				for (auto i = 0; i < figs.size(); i++) {
+
+					figs.at(i)->MouseMove(x, y);
+
+					if (figs.at(i)->entered) {
+						entObj = i;
+						break;
+					}
+					else {
+						entObj = -1;
+					}
+				}
+
+				pnlField->Refresh();
+				//this->Refresh();
+				lblInfo3->Text = gcnew String(("entObj: " + to_string(entObj)).c_str());
+			}
+
+
+			if (isFiguresSpawn) {
+				if (drag) {
+					/*figs.at(selObj)->koord.x = x;
+					figs.at(selObj)->koord.y = y;*/
+					figs.at(entObj)->koord.x = x;
+					figs.at(entObj)->koord.y = y;
 					pnlField->Refresh();
 				}
 			}
+
 		}
+		System::Void pnlField_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			drag = false;
+		}
+		System::Void pnlField_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			drag = true;
+		}
+
+
+
+
 
 		System::Void pnlTop_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) { drugMD(sender, e); }
 		System::Void pnlTop_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) { drugMM(sender, e); }
@@ -357,6 +457,27 @@ namespace KillMe {
 
 	
 	
+	
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		pnlField->Refresh();
+	}
+		System::Void btnInfo_Click(System::Object^ sender, System::EventArgs^ e) {
+			String^ info = "";
+
+			for (int i = 0; i < figs.size(); i++) {
+				info += figs.at(i)->koord.x + "\n";
+			}
+
+			MessageBox::Show(info);
+		}
+
+
+
+		System::Void frmMain_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+			for (auto i : figs) i->~Figure();
+			figs.clear();
+			cout << "Array size is " << figs.size() << "." << endl;
+		}
 	};
 
 }
