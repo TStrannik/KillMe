@@ -229,7 +229,7 @@ namespace KillMe {
 		}
 
 		int COL = 50;
-		int selObj = 0;
+		int selObj = -1;
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			isFiguresSpawn = true;
 
@@ -244,8 +244,8 @@ namespace KillMe {
 
 			figs.push_back(
 				Figure(
-					figureCounter + 1,
-					"Manul " + to_string(figureCounter + 1),
+					figureCounter,
+					"Manul " + to_string(figureCounter),
 					100 + figureCounter % 8 * 100,
 					COL,
 					50, 
@@ -286,18 +286,29 @@ namespace KillMe {
 				for (auto i = 0; i < figs.size(); i++)
 				{
 					figs.at(i).MouseMove(x, y);
-					if (figs.at(i).entered) selObj = i + 1;
+					if (figs.at(i).entered) selObj = i;
 				}
 
 				lblInfo3->Text = gcnew String(("Manul " + to_string(selObj)).c_str());
 			}
 
 		}
-		System::Void pnlField_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			if (e->Button == System::Windows::Forms::MouseButtons::Left)
-				figs.at(selObj - 1).MouseClick(0x01);
-			if (e->Button == System::Windows::Forms::MouseButtons::Right)
-				figs.at(selObj - 1).MouseClick(0x02);
+		System::Void pnlField_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+		{
+			if (figureCounter != 0 && selObj != -1) {
+
+				if (e->Button == System::Windows::Forms::MouseButtons::Left)
+					if (figs.at(selObj).entered) figs.at(selObj).MouseClick(0x01);
+
+				if (e->Button == System::Windows::Forms::MouseButtons::Right)
+					if (figs.at(selObj).entered) figs.at(selObj).MouseClick(0x02);
+
+				if (e->Button == System::Windows::Forms::MouseButtons::Right)
+				{
+					if (figs.at(selObj).entered) figs.at(selObj).koord.y += 50;
+					pnlField->Refresh();
+				}
+			}
 		}
 
 		System::Void pnlTop_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) { drugMD(sender, e); }

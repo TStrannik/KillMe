@@ -3,19 +3,25 @@
 
 #pragma once
 
+#pragma region STRUCTS & CONSTS
 public struct koordinates { int x; int y; };
 public struct sizes		  { int w; int h; };
 public struct _Figurist {
-	uint32_t id;
+	int32_t id;
 	std::string name;
 	int x; int y; int w; int h;
 };
 
 //this->Write(Context->ExecMacro("$(End)"));
+#pragma endregion
 
-public class Figure
-{
+
+
+public class Figure  {
+
+
 public:
+#pragma region CONSTRUCTORS &~
 	 Figure();	
 	 /// <summary> Создание фигуры с центром по координатам X и Y </summary>
 		/// <param name="x">Координата X центра объекта</param>
@@ -46,10 +52,15 @@ public:
 		/// <param name="y">Координата Y центра объекта</param>
 		/// <param name="w">Ширина контейнера объекта</param>
 		/// <param name="h">Высота контейнера объекта</param>
-	 Figure(uint32_t i, std::string name, int x, int y, int width, int height);
+	 Figure(int32_t id, std::string name, int x, int y, int width, int height);
 
 	 ~Figure() { std::cout << "\t~Figure()" << std::endl; };
+#pragma endregion
 
+
+
+public:
+#pragma region Kernel
 	koordinates koord;
 	sizes size;
 	void sizes(int, int);
@@ -64,10 +75,13 @@ public:
 	
 	bool entered;
 	void MouseClick(uint8_t button);
+#pragma endregion
 	
 
+
 private:
-	uint32_t _id;
+#pragma region Inside V&M
+	int32_t _id = -1;
 	
 	int __varka;
 
@@ -81,6 +95,9 @@ private:
 	}
 
 	/// <summary> <# GenerateSummaryText(); #> </summary>
+#pragma endregion
+
+
 
 };
 

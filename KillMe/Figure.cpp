@@ -9,12 +9,17 @@ using namespace System::ComponentModel;
 using namespace System::Collections;
 using namespace System::Data;
 
-Figure::Figure()														  { __FSet({  0, "",   10, 10, 0, 0 }); }
-Figure::Figure(int x, int y)											  { __FSet({  0, "",   x,  y,  0, 0 }); }
-Figure::Figure(std::string name, int x, int y)							  { __FSet({  0, name, x,  y,  0, 0 }); }
-Figure::Figure(int x, int y, int w, int h)								  { __FSet({  0, "",   x,  y,  w, h }); }
-Figure::Figure(std::string name, int x, int y, int w, int h)			  { __FSet({  0, name, x,  y,  w, h }); }
-Figure::Figure(uint32_t id, std::string name, int x, int y, int w, int h) { __FSet({ id, name, x,  y,  w, h }); }
+
+
+
+
+#pragma region CONSTRUCTORS etc
+Figure::Figure()														 { __FSet({  0, "",   10, 10, 0, 0 }); }
+Figure::Figure(int x, int y)											 { __FSet({  0, "",   x,  y,  0, 0 }); }
+Figure::Figure(std::string name, int x, int y)							 { __FSet({  0, name, x,  y,  0, 0 }); }
+Figure::Figure(int x, int y, int w, int h)								 { __FSet({  0, "",   x,  y,  w, h }); }
+Figure::Figure(std::string name, int x, int y, int w, int h)			 { __FSet({  0, name, x,  y,  w, h }); }
+Figure::Figure(int32_t id, std::string name, int x, int y, int w, int h) { __FSet({ id, name, x,  y,  w, h }); }
 
 void Figure::__FSet(_Figurist figure_data) {
 	_id =  figure_data.id;
@@ -25,13 +30,14 @@ void Figure::__FSet(_Figurist figure_data) {
 	cout << "Figure set" << endl;
 	
 }
-
 void Figure::koords(int x, int y) { this->koord.x = x; this->koord.y = y; }
-void Figure::sizes(int w, int h)  { this->size.w = w;  this->size.h = h;  }
+void Figure::sizes(int w, int h) { this->size.w = w;  this->size.h = h; }
+#pragma endregion
 
 
 
 
+#pragma region Mouse Events
 void Figure::MouseClick(uint8_t button) {
 	if (button == _MB_LEFT)  cout << "\tClick(Left) "  << _id << endl; 
 	if (button == _MB_RIGHT) cout << "\tClick(Rught) " << _id << endl;	
@@ -57,10 +63,13 @@ uint32_t Figure::MouseMove(int x, int y) {
 	return _id;
 }
 
+#pragma endregion
 
 
 
 
+
+#pragma region Painting
 void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 	Panel^ p = (Panel^)sender;
 #pragma region def
@@ -77,6 +86,7 @@ void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::Paint
 
 	Pen^ pen = gcnew Pen(Color::Black);
 	Brush^ txBrush = gcnew SolidBrush(Color::Black);
+	
 #pragma endregion
 
 #pragma region drawing
@@ -106,3 +116,5 @@ void Figure::repaintFigure(System::Object^ sender, System::Windows::Forms::Paint
 #pragma endregion
 
 }
+
+#pragma endregion
