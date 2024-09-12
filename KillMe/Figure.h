@@ -62,15 +62,19 @@ public:
 	uint32_t MouseMove(int x, int y);
 
 	
-
-	void Click();
+	bool entered;
+	void MouseClick(uint8_t button);
 	
 
 private:
 	uint32_t _id;
+	
 	int __varka;
 
 	void __FSet(_Figurist figure_data);
+
+	const uint8_t _MB_LEFT  = 0x01;
+	const uint8_t _MB_RIGHT = 0x02;
 
 	void GenerateSummaryText() {
 		

@@ -57,10 +57,10 @@ namespace KillMe {
 			   this->btnClose = (gcnew System::Windows::Forms::Button());
 			   this->pnlBottom = (gcnew System::Windows::Forms::Panel());
 			   this->pnlField = (gcnew System::Windows::Forms::Panel());
+			   this->lblInfo3 = (gcnew System::Windows::Forms::Label());
 			   this->lblInfo2 = (gcnew System::Windows::Forms::Label());
 			   this->lblInfo1 = (gcnew System::Windows::Forms::Label());
 			   this->btnRespawn = (gcnew System::Windows::Forms::Button());
-			   this->lblInfo3 = (gcnew System::Windows::Forms::Label());
 			   this->pnlTop->SuspendLayout();
 			   this->pnlField->SuspendLayout();
 			   this->SuspendLayout();
@@ -132,7 +132,17 @@ namespace KillMe {
 			   this->pnlField->Size = System::Drawing::Size(249, 160);
 			   this->pnlField->TabIndex = 1;
 			   this->pnlField->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &frmMain::pnlField_Paint);
+			   this->pnlField->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlField_MouseClick);
 			   this->pnlField->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlField_MouseMove);
+			   // 
+			   // lblInfo3
+			   // 
+			   this->lblInfo3->AutoSize = true;
+			   this->lblInfo3->Location = System::Drawing::Point(3, 9);
+			   this->lblInfo3->Name = L"lblInfo3";
+			   this->lblInfo3->Size = System::Drawing::Size(41, 13);
+			   this->lblInfo3->TabIndex = 3;
+			   this->lblInfo3->Text = L"lblInfo3";
 			   // 
 			   // lblInfo2
 			   // 
@@ -166,16 +176,6 @@ namespace KillMe {
 			   this->btnRespawn->Text = L"Spawn";
 			   this->btnRespawn->UseVisualStyleBackColor = true;
 			   this->btnRespawn->Click += gcnew System::EventHandler(this, &frmMain::btnRespawn_Click);
-			   // 
-			   // lblInfo3
-			   // 
-			   this->lblInfo3->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			   this->lblInfo3->AutoSize = true;
-			   this->lblInfo3->Location = System::Drawing::Point(3, 9);
-			   this->lblInfo3->Name = L"lblInfo3";
-			   this->lblInfo3->Size = System::Drawing::Size(41, 13);
-			   this->lblInfo3->TabIndex = 3;
-			   this->lblInfo3->Text = L"lblInfo3";
 			   // 
 			   // frmMain
 			   // 
@@ -229,6 +229,7 @@ namespace KillMe {
 		}
 
 		int COL = 50;
+		int selObj = 0;
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			isFiguresSpawn = true;
 
@@ -245,7 +246,7 @@ namespace KillMe {
 				Figure(
 					figureCounter + 1,
 					"Manul " + to_string(figureCounter + 1),
-					100 + figureCounter % 7 * 100,
+					100 + figureCounter % 8 * 100,
 					COL,
 					50, 
 					20
@@ -253,7 +254,7 @@ namespace KillMe {
 			);
 			figureCounter++;
 
-			if (figureCounter % 7 == 0) COL += 50;
+			if (figureCounter % 8 == 0) COL += 50;
 
 			
 
@@ -278,22 +279,25 @@ namespace KillMe {
 
 		}
 		System::Void pnlField_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
-			int x = e->X;
-			int y = e->Y;
-			lblInfo2->Text = x.ToString() +  ":" + y.ToString();
-
-
+			int x = e->X; int y = e->Y;
+			
 			if (isFiguresSpawn)
-				for (auto i = 0; i < figs.size(); i++) {
-					lblInfo3->Text = gcnew String((
-						"Manul " + to_string(figs.at(i).MouseMove(x, y))
-						).c_str()
-					);
-
-					//figs.at(i).MouseMove(x, y);
+			{
+				for (auto i = 0; i < figs.size(); i++)
+				{
+					figs.at(i).MouseMove(x, y);
+					if (figs.at(i).entered) selObj = i + 1;
 				}
-					
+
+				lblInfo3->Text = gcnew String(("Manul " + to_string(selObj)).c_str());
+			}
+
+		}
+		System::Void pnlField_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			if (e->Button == System::Windows::Forms::MouseButtons::Left)
+				figs.at(selObj - 1).MouseClick(0x01);
+			if (e->Button == System::Windows::Forms::MouseButtons::Right)
+				figs.at(selObj - 1).MouseClick(0x02);
 		}
 
 		System::Void pnlTop_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) { drugMD(sender, e); }
@@ -340,6 +344,7 @@ namespace KillMe {
 
 	
 
+	
 	
 	};
 

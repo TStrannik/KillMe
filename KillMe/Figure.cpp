@@ -29,9 +29,13 @@ void Figure::__FSet(_Figurist figure_data) {
 void Figure::koords(int x, int y) { this->koord.x = x; this->koord.y = y; }
 void Figure::sizes(int w, int h)  { this->size.w = w;  this->size.h = h;  }
 
-void Figure::Click() { cout << "\tFigure::Click()" << endl; }
 
 
+
+void Figure::MouseClick(uint8_t button) {
+	if (button == _MB_LEFT)  cout << "\tClick(Left) "  << _id << endl; 
+	if (button == _MB_RIGHT) cout << "\tClick(Rught) " << _id << endl;	
+}
 
 uint32_t Figure::MouseMove(int x, int y) {
 	int L = this->koord.x - this->size.w / 2;
@@ -39,12 +43,15 @@ uint32_t Figure::MouseMove(int x, int y) {
 	int R = this->koord.x + this->size.w / 2;
 	int B = this->koord.y + this->size.h / 2;;
 	
-
 	bool cond1 = (x >= L) && (x <= R);
 	bool cond2 = (y >= T) && (y <= B);
 	//bool once = false;
 	if (cond1 && cond2) {
-		cout << "\tManul " << _id << endl << x << ":" << y << endl;
+		entered = true;
+		//cout << "\tManul " << _id << endl << x << ":" << y << endl;
+	}
+	else {
+		entered = false;
 	}
 		
 	return _id;
