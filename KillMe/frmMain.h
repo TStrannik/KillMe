@@ -24,7 +24,6 @@ namespace KillMe {
 	bool isFiguresSpawn = false;
 	UINT8 figureCounter = 0;
 	vector <Figure*> figs;
-	
 
 
 
@@ -127,10 +126,11 @@ namespace KillMe {
 			   // 
 			   // btnInfo
 			   // 
-			   this->btnInfo->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
+			   this->btnInfo->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				   | System::Windows::Forms::AnchorStyles::Left));
 			   this->btnInfo->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			   this->btnInfo->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			   this->btnInfo->Location = System::Drawing::Point(25, 14);
+			   this->btnInfo->Location = System::Drawing::Point(25, 15);
 			   this->btnInfo->Name = L"btnInfo";
 			   this->btnInfo->Size = System::Drawing::Size(75, 23);
 			   this->btnInfo->TabIndex = 1;
@@ -224,6 +224,9 @@ namespace KillMe {
 			   this->Text = L"frmMain";
 			   this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &frmMain::frmMain_FormClosed);
 			   this->Load += gcnew System::EventHandler(this, &frmMain::frmMain_Load);
+			   this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &frmMain::frmMain_KeyDown);
+			   this->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &frmMain::frmMain_KeyPress);
+			   this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &frmMain::frmMain_KeyUp);
 			   this->pnlTop->ResumeLayout(false);
 			   this->pnlBottom->ResumeLayout(false);
 			   this->pnlField->ResumeLayout(false);
@@ -268,8 +271,10 @@ namespace KillMe {
 		int focObj = -1;
 		int entObj = -1;
 		bool drag = false;
+		bool lCtrlD = false;
 		System::Void btnRespawn_Click(System::Object^ sender, System::EventArgs^ e) {
 			isFiguresSpawn = true;
+
 
 			figs.push_back(
 				new Figure(
@@ -389,15 +394,15 @@ namespace KillMe {
 			}
 
 
-			if (isFiguresSpawn) {
-				if (drag) {
-					/*figs.at(selObj)->koord.x = x;
-					figs.at(selObj)->koord.y = y;*/
-					figs.at(entObj)->koord.x = x;
-					figs.at(entObj)->koord.y = y;
-					pnlField->Refresh();
-				}
-			}
+			//if (isFiguresSpawn) {
+			//	if (drag) {
+			//		figs.at(selObj)->koord.x = x;
+			//		figs.at(selObj)->koord.y = y;
+			//		/*figs.at(entObj)->koord.x = x;
+			//		figs.at(entObj)->koord.y = y;*/
+			//		pnlField->Refresh();
+			//	}
+			//}
 
 		}
 		System::Void pnlField_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
@@ -405,9 +410,61 @@ namespace KillMe {
 		}
 		System::Void pnlField_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			drag = true;
+
+
+			if (figureCounter != 0 && entObj != -1) 
+			{			/// select one
+
+				// ctrl
+				if (1) drop_all();
+				selObj = entObj;
+
+				if (e->Button == System::Windows::Forms::MouseButtons::Left) {
+					if (figs.at(selObj)->entered)
+					{
+							
+							figs.at(selObj)->MouseClick(0x01);
+							figs.at(selObj)->selected = true;
+							
+					}
+					
+				}
+
+			}
+			else
+			{			/// drop all
+				drop_all();
+				
+			}
+		}
+		void drop_all() {
+			for (auto i : figs) i->selected = false;
+			//figs.at(selObj)->selected = false;
+
+			selObj = -1;
+			pnlField->Refresh();
 		}
 
 
+
+		System::Void frmMain_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+			/*if (e->KeyCode == Keys::Control) lCtrlD = true;
+
+			lblInfo2->Text = lCtrlD ? "true" : "false";*/
+
+
+			MessageBox::Show("Down");
+		}
+		System::Void frmMain_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+			/*if (e->KeyCode == Keys::Control) lCtrlD = false;
+
+			lblInfo2->Text = lCtrlD ? "true" : "false";*/
+
+			MessageBox::Show("Up");
+		}
+		System::Void frmMain_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
+			MessageBox::Show("Press");
+		}
 
 
 
@@ -478,6 +535,8 @@ namespace KillMe {
 			figs.clear();
 			cout << "Array size is " << figs.size() << "." << endl;
 		}
+	
+	
 	};
 
 }
