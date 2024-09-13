@@ -45,6 +45,9 @@ namespace KillMe {
 	private: System::Windows::Forms::Label^ lblInfo3;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Button^ btnInfo;
+	private: System::Windows::Forms::MenuStrip^ HotKeys;
+	private: System::Windows::Forms::ToolStripMenuItem^ F1;
+	private: System::Windows::Forms::ToolStripMenuItem^ lCtrl;
 	private: System::ComponentModel::Container^ components;
 #pragma endregion Kernel
 
@@ -63,14 +66,21 @@ namespace KillMe {
 			   this->lblInfo2 = (gcnew System::Windows::Forms::Label());
 			   this->lblInfo1 = (gcnew System::Windows::Forms::Label());
 			   this->btnRespawn = (gcnew System::Windows::Forms::Button());
+			   this->HotKeys = (gcnew System::Windows::Forms::MenuStrip());
+			   this->F1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->lCtrl = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->pnlLeft->SuspendLayout();
+			   this->pnlRight->SuspendLayout();
 			   this->pnlTop->SuspendLayout();
 			   this->pnlBottom->SuspendLayout();
-			   this->pnlField->SuspendLayout();
+			   this->HotKeys->SuspendLayout();
 			   this->SuspendLayout();
 			   // 
 			   // pnlLeft
 			   // 
 			   this->pnlLeft->BackColor = System::Drawing::Color::Orange;
+			   this->pnlLeft->Controls->Add(this->lblInfo3);
+			   this->pnlLeft->Controls->Add(this->lblInfo1);
 			   this->pnlLeft->Location = System::Drawing::Point(41, 91);
 			   this->pnlLeft->Name = L"pnlLeft";
 			   this->pnlLeft->Size = System::Drawing::Size(50, 160);
@@ -79,6 +89,7 @@ namespace KillMe {
 			   // pnlRight
 			   // 
 			   this->pnlRight->BackColor = System::Drawing::Color::Orange;
+			   this->pnlRight->Controls->Add(this->lblInfo2);
 			   this->pnlRight->Location = System::Drawing::Point(352, 91);
 			   this->pnlRight->Name = L"pnlRight";
 			   this->pnlRight->Size = System::Drawing::Size(50, 160);
@@ -118,7 +129,9 @@ namespace KillMe {
 			   // pnlBottom
 			   // 
 			   this->pnlBottom->BackColor = System::Drawing::Color::DimGray;
+			   this->pnlBottom->Controls->Add(this->button1);
 			   this->pnlBottom->Controls->Add(this->btnInfo);
+			   this->pnlBottom->Controls->Add(this->btnRespawn);
 			   this->pnlBottom->Location = System::Drawing::Point(41, 257);
 			   this->pnlBottom->Name = L"pnlBottom";
 			   this->pnlBottom->Size = System::Drawing::Size(361, 50);
@@ -141,15 +154,11 @@ namespace KillMe {
 			   // pnlField
 			   // 
 			   this->pnlField->BackColor = System::Drawing::Color::White;
-			   this->pnlField->Controls->Add(this->button1);
-			   this->pnlField->Controls->Add(this->lblInfo3);
-			   this->pnlField->Controls->Add(this->lblInfo2);
-			   this->pnlField->Controls->Add(this->lblInfo1);
-			   this->pnlField->Controls->Add(this->btnRespawn);
 			   this->pnlField->Location = System::Drawing::Point(97, 91);
 			   this->pnlField->Name = L"pnlField";
 			   this->pnlField->Size = System::Drawing::Size(249, 160);
 			   this->pnlField->TabIndex = 1;
+			   this->pnlField->Click += gcnew System::EventHandler(this, &frmMain::pnlField_Click);
 			   this->pnlField->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &frmMain::pnlField_Paint);
 			   this->pnlField->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlField_MouseClick);
 			   this->pnlField->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frmMain::pnlField_MouseDown);
@@ -160,7 +169,7 @@ namespace KillMe {
 			   // 
 			   this->button1->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			   this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			   this->button1->Location = System::Drawing::Point(169, 134);
+			   this->button1->Location = System::Drawing::Point(225, 15);
 			   this->button1->Name = L"button1";
 			   this->button1->Size = System::Drawing::Size(56, 23);
 			   this->button1->TabIndex = 4;
@@ -171,7 +180,8 @@ namespace KillMe {
 			   // lblInfo3
 			   // 
 			   this->lblInfo3->AutoSize = true;
-			   this->lblInfo3->Location = System::Drawing::Point(3, 9);
+			   this->lblInfo3->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			   this->lblInfo3->Location = System::Drawing::Point(6, 10);
 			   this->lblInfo3->Name = L"lblInfo3";
 			   this->lblInfo3->Size = System::Drawing::Size(41, 13);
 			   this->lblInfo3->TabIndex = 3;
@@ -181,7 +191,8 @@ namespace KillMe {
 			   // 
 			   this->lblInfo2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			   this->lblInfo2->AutoSize = true;
-			   this->lblInfo2->Location = System::Drawing::Point(184, 118);
+			   this->lblInfo2->ForeColor = System::Drawing::SystemColors::ControlLightLight;
+			   this->lblInfo2->Location = System::Drawing::Point(6, 118);
 			   this->lblInfo2->Name = L"lblInfo2";
 			   this->lblInfo2->Size = System::Drawing::Size(41, 13);
 			   this->lblInfo2->TabIndex = 2;
@@ -192,7 +203,8 @@ namespace KillMe {
 			   // 
 			   this->lblInfo1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			   this->lblInfo1->AutoSize = true;
-			   this->lblInfo1->Location = System::Drawing::Point(3, 118);
+			   this->lblInfo1->ForeColor = System::Drawing::SystemColors::ControlLightLight;
+			   this->lblInfo1->Location = System::Drawing::Point(6, 118);
 			   this->lblInfo1->Name = L"lblInfo1";
 			   this->lblInfo1->Size = System::Drawing::Size(41, 13);
 			   this->lblInfo1->TabIndex = 1;
@@ -201,14 +213,39 @@ namespace KillMe {
 			   // btnRespawn
 			   // 
 			   this->btnRespawn->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
+			   this->btnRespawn->BackColor = System::Drawing::Color::White;
 			   this->btnRespawn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			   this->btnRespawn->Location = System::Drawing::Point(88, 134);
+			   this->btnRespawn->Location = System::Drawing::Point(141, 15);
 			   this->btnRespawn->Name = L"btnRespawn";
 			   this->btnRespawn->Size = System::Drawing::Size(75, 23);
 			   this->btnRespawn->TabIndex = 0;
 			   this->btnRespawn->Text = L"Spawn";
-			   this->btnRespawn->UseVisualStyleBackColor = true;
+			   this->btnRespawn->UseVisualStyleBackColor = false;
 			   this->btnRespawn->Click += gcnew System::EventHandler(this, &frmMain::btnRespawn_Click);
+			   // 
+			   // HotKeys
+			   // 
+			   this->HotKeys->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) { this->F1, this->lCtrl });
+			   this->HotKeys->Location = System::Drawing::Point(0, 0);
+			   this->HotKeys->Name = L"HotKeys";
+			   this->HotKeys->Size = System::Drawing::Size(1059, 24);
+			   this->HotKeys->TabIndex = 4;
+			   this->HotKeys->Text = L"menuStrip1";
+			   this->HotKeys->Visible = false;
+			   // 
+			   // F1
+			   // 
+			   this->F1->Name = L"F1";
+			   this->F1->ShortcutKeys = System::Windows::Forms::Keys::F1;
+			   this->F1->Size = System::Drawing::Size(31, 20);
+			   this->F1->Text = L"F1";
+			   this->F1->Click += gcnew System::EventHandler(this, &frmMain::F1_Click);
+			   // 
+			   // lCtrl
+			   // 
+			   this->lCtrl->Name = L"lCtrl";
+			   this->lCtrl->Size = System::Drawing::Size(41, 20);
+			   this->lCtrl->Text = L"lCtrl";
 			   // 
 			   // frmMain
 			   // 
@@ -219,7 +256,9 @@ namespace KillMe {
 			   this->Controls->Add(this->pnlTop);
 			   this->Controls->Add(this->pnlRight);
 			   this->Controls->Add(this->pnlLeft);
+			   this->Controls->Add(this->HotKeys);
 			   this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
+			   this->MainMenuStrip = this->HotKeys;
 			   this->Name = L"frmMain";
 			   this->Text = L"frmMain";
 			   this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &frmMain::frmMain_FormClosed);
@@ -227,18 +266,49 @@ namespace KillMe {
 			   this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &frmMain::frmMain_KeyDown);
 			   this->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &frmMain::frmMain_KeyPress);
 			   this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &frmMain::frmMain_KeyUp);
+			   this->pnlLeft->ResumeLayout(false);
+			   this->pnlLeft->PerformLayout();
+			   this->pnlRight->ResumeLayout(false);
+			   this->pnlRight->PerformLayout();
 			   this->pnlTop->ResumeLayout(false);
 			   this->pnlBottom->ResumeLayout(false);
-			   this->pnlField->ResumeLayout(false);
-			   this->pnlField->PerformLayout();
+			   this->HotKeys->ResumeLayout(false);
+			   this->HotKeys->PerformLayout();
 			   this->ResumeLayout(false);
+			   this->PerformLayout();
 
 		   }
 #pragma endregion
 
+public:
+	//virtual bool ProcessCmdKey(Message% msg, Keys keyData) override
+	//{
+	//	if (keyData == Keys::F2)
+	//	{
+	//		this->Focus();
+	//		MessageBox::Show("F2");
+	//		return true;
+	//	}
+	//	/*if (keyData == Keys::LControlKey)*/
+	//	if (keyData == Keys::Modifiers)
+	//	{
+	//		this->Focus();
+	//		MessageBox::Show("LCtrl");
+	//		return true;
+	//	}
+	//	if (keyData == Keys::Escape)
+	//	{
+	//		this->Focus();
+	//		Close();
+	//		return true;
+	//	}
+
+	//	return Form::ProcessCmdKey(msg, keyData);
+	//}
+
+
+
 #pragma region Voids
-
-
 	private:
 		System::Void frmMain_Load(System::Object^ sender, System::EventArgs^ e) {
 
@@ -303,7 +373,10 @@ namespace KillMe {
 		}
 
 		
-
+		System::Void pnlField_Click(System::Object^ sender, System::EventArgs^ e) { 
+			pnlBottom->Enabled = false;
+			this->Focus(); 
+		}
 		System::Void pnlField_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 			/*BufferedGraphics^ bg = 
 				BufferedGraphicsManager::Current->Allocate(
@@ -465,7 +538,11 @@ namespace KillMe {
 		System::Void frmMain_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
 			MessageBox::Show("Press");
 		}
-
+		System::Void frmMain_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+			for (auto i : figs) i->~Figure();
+			figs.clear();
+			cout << "Array size is " << figs.size() << "." << endl;
+		}
 
 
 		System::Void pnlTop_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) { drugMD(sender, e); }
@@ -477,6 +554,10 @@ namespace KillMe {
 		}
 
 		System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) { Close(); }
+		System::Void F1_Click(System::Object^ sender, System::EventArgs^ e) {
+			MessageBox::Show("Huitler");
+		}
+		
 #pragma endregion
 
 
@@ -507,6 +588,11 @@ namespace KillMe {
 		void drugMU(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 				if (e->Button == Windows::Forms::MouseButtons::Left) { isMouseDown_ = false; }
 			}
+
+
+		
+
+
 #pragma endregion
 
 
@@ -530,12 +616,13 @@ namespace KillMe {
 
 
 
-		System::Void frmMain_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
-			for (auto i : figs) i->~Figure();
-			figs.clear();
-			cout << "Array size is " << figs.size() << "." << endl;
-		}
+		
 	
+	
+	
+	
+	
+		
 	
 	};
 
